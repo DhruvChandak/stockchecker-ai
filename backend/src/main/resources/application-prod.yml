@@ -1,0 +1,40 @@
+spring:
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+  flyway:
+    url: ${FLYWAY_URL:${DATABASE_URL}}
+    user: ${FLYWAY_USERNAME:${DATABASE_USERNAME}}
+    password: ${FLYWAY_PASSWORD:${DATABASE_PASSWORD}}
+  cache:
+    type: ${CACHE_TYPE:simple}
+
+management:
+  health:
+    redis:
+      enabled: ${MANAGEMENT_HEALTH_REDIS_ENABLED:false}
+    rabbit:
+      enabled: ${MANAGEMENT_HEALTH_RABBIT_ENABLED:false}
+
+app:
+  jwt:
+    secret: ${JWT_SECRET}
+  auth:
+    require-email-verification: true
+  public-url: ${APP_PUBLIC_URL}
+  backend-public-url: ${BACKEND_PUBLIC_URL}
+  email:
+    provider: ${EMAIL_PROVIDER:resend}
+    from: ${EMAIL_FROM}
+    resend-api-key: ${RESEND_API_KEY}
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS}
+  storage:
+    local-root: ${LOCAL_STORAGE_ROOT:/app/uploads}
+  demo:
+    seed-enabled: false
+  swagger:
+    public-enabled: false
+  dev-tools:
+    enabled: false

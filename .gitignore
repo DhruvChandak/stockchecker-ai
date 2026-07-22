@@ -7,6 +7,7 @@ web/.env.example
 application-prod.yml
 application-production.yml
 !backend/src/main/resources/application.yml
+!backend/src/main/resources/application-prod.yml
 *.pem
 *.key
 *.p12
