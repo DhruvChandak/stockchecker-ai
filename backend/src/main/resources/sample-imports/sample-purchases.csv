@@ -1,0 +1,4 @@
+Invoice Number,Voucher Date,Supplier,Item Name,Qty,Rate,GST %,Godown
+P-2001,2026-03-25,ABC FMCG Supplier,Surf Excel 1kg,24,118.00,18,Main Godown
+P-2002,2026-03-29,National Distributors,Tata Salt 1kg,60,18.00,5,Main Godown
+P-2003,2026-04-04,Metro Wholesale,Fortune Oil 1L,20,112.00,5,Main Godown

@@ -1,0 +1,46 @@
+<ENVELOPE>
+  <BODY>
+    <DATA>
+      <TALLYMESSAGE>
+        <VOUCHER VCHTYPE="Purchase" ACTION="Create">
+          <DATE>20260601</DATE>
+          <VOUCHERNUMBER>P-RATE-CASES</VOUCHERNUMBER>
+          <PARTYLEDGERNAME>Sample Supplier</PARTYLEDGERNAME>
+          <ALLINVENTORYENTRIES.LIST>
+            <STOCKITEMNAME>Explicit Rate Item</STOCKITEMNAME>
+            <BILLEDQTY>10 Nos</BILLEDQTY>
+            <RATE>30.00 / Nos</RATE>
+            <AMOUNT>-300.00</AMOUNT>
+            <GODOWNNAME>Main Godown</GODOWNNAME>
+          </ALLINVENTORYENTRIES.LIST>
+          <ALLINVENTORYENTRIES.LIST>
+            <STOCKITEMNAME>Derived Rate Item</STOCKITEMNAME>
+            <BILLEDQTY>10 Nos</BILLEDQTY>
+            <AMOUNT>-500.00</AMOUNT>
+            <GODOWNNAME>Main Godown</GODOWNNAME>
+          </ALLINVENTORYENTRIES.LIST>
+          <ALLINVENTORYENTRIES.LIST>
+            <STOCKITEMNAME>Signed Rate Item</STOCKITEMNAME>
+            <BILLEDQTY>10 Nos</BILLEDQTY>
+            <rate>-20.00/Nos</rate>
+            <AMOUNT>-200.00</AMOUNT>
+            <GODOWNNAME>Main Godown</GODOWNNAME>
+          </ALLINVENTORYENTRIES.LIST>
+          <ALLINVENTORYENTRIES.LIST>
+            <STOCKITEMNAME>Free Scheme Item</STOCKITEMNAME>
+            <BILLEDQTY>5 Nos</BILLEDQTY>
+            <GODOWNNAME>Main Godown</GODOWNNAME>
+          </ALLINVENTORYENTRIES.LIST>
+          <ALLLEDGERENTRIES.LIST>
+            <LEDGERNAME>Input GST</LEDGERNAME>
+            <AMOUNT>-50.00</AMOUNT>
+          </ALLLEDGERENTRIES.LIST>
+          <ALLLEDGERENTRIES.LIST>
+            <LEDGERNAME>Round Off</LEDGERNAME>
+            <AMOUNT>0.01</AMOUNT>
+          </ALLLEDGERENTRIES.LIST>
+        </VOUCHER>
+      </TALLYMESSAGE>
+    </DATA>
+  </BODY>
+</ENVELOPE>

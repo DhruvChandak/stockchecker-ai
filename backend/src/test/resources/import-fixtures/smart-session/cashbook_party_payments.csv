@@ -1,0 +1,3 @@
+Date,Party Name,Amount,Direction,Reference Number,Payment Mode
+2026-06-20,Sample Customer,500,RECEIPT,RCPT-500,BANK
+2026-06-21,Sample Supplier,200,PAYMENT,PAY-200,UPI

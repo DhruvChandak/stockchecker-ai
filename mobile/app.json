@@ -1,0 +1,22 @@
+{
+  "expo": {
+    "name": "StockPilot AI",
+    "slug": "stockpilot-ai",
+    "scheme": "stockpilot",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "plugins": [
+      "expo-router"
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "cfe7ff6a-cbb4-4e8b-b721-ab45f8ee7406"
+      }
+    },
+    "android": {
+      "package": "com.dhruvdc07.stockpilotai"
+    }
+  }
+}

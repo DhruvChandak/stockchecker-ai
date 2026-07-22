@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ENVELOPE>
+  <BODY>
+    <DATA>
+      <TALLYMESSAGE>
+        <VOUCHER VCHTYPE="Sales" ACTION="Create">
+          <DATE>20260401</DATE>
+          <VOUCHERNUMBER>S-1001</VOUCHERNUMBER>
+          <PARTYLEDGERNAME>Ravi Traders</PARTYLEDGERNAME>
+          <ALLINVENTORYENTRIES.LIST>
+            <STOCKITEMNAME>Maggi Masala Noodles 70g</STOCKITEMNAME>
+            <ACTUALQTY>24 PCS</ACTUALQTY>
+            <RATE>12.00/PCS</RATE>
+            <AMOUNT>288.00</AMOUNT>
+            <BATCHALLOCATIONS.LIST>
+              <GODOWNNAME>Main Godown</GODOWNNAME>
+            </BATCHALLOCATIONS.LIST>
+          </ALLINVENTORYENTRIES.LIST>
+        </VOUCHER>
+      </TALLYMESSAGE>
+      <TALLYMESSAGE>
+        <VOUCHER VCHTYPE="Purchase" ACTION="Create">
+          <DATE>20260325</DATE>
+          <VOUCHERNUMBER>P-2001</VOUCHERNUMBER>
+          <PARTYLEDGERNAME>ABC FMCG Supplier</PARTYLEDGERNAME>
+          <ALLINVENTORYENTRIES.LIST>
+            <STOCKITEMNAME>Surf Excel 1kg</STOCKITEMNAME>
+            <ACTUALQTY>24 PCS</ACTUALQTY>
+            <RATE>118.00/PCS</RATE>
+            <AMOUNT>2832.00</AMOUNT>
+            <BATCHALLOCATIONS.LIST>
+              <GODOWNNAME>Main Godown</GODOWNNAME>
+            </BATCHALLOCATIONS.LIST>
+          </ALLINVENTORYENTRIES.LIST>
+        </VOUCHER>
+      </TALLYMESSAGE>
+    </DATA>
+  </BODY>
+</ENVELOPE>

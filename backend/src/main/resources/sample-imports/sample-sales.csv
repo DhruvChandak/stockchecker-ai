@@ -1,0 +1,4 @@
+Invoice Number,Voucher Date,Party Name,Item Name,Qty,Rate,GST %,Godown
+S-1001,2026-04-01,Ravi Traders,Maggi Masala Noodles 70g,24,12.00,5,Main Godown
+S-1002,2026-04-02,Kumar Retail Store,Parle-G 250g,18,25.00,5,Retail Counter
+S-1003,2026-04-03,City Supermart,Dairy Milk 50g,12,45.00,18,Main Godown

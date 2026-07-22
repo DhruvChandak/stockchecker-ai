@@ -1,0 +1,31 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:stockpilot-test;MODE=PostgreSQL;DATABASE_TO_UPPER=false;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+  flyway:
+    enabled: false
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        globally_quoted_identifiers: false
+  cache:
+    type: simple
+app:
+  jwt:
+    secret: test-secret-test-secret-test-secret-test-secret-test-secret-test-secret
+    access-token-minutes: 60
+  auth:
+    require-email-verification: false
+    email-cooldown-seconds: 60
+    verification-token-hours: 24
+    password-reset-token-minutes: 30
+  public-url: http://localhost:3000
+  email:
+    provider: local
+  cors:
+    allowed-origins: http://localhost:3000
+  storage:
+    local-root: target/test-uploads

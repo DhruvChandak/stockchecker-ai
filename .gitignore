@@ -1,0 +1,56 @@
+﻿# Environment / secrets
+.env
+.env.*
+.env.example
+!.env.neon.example
+web/.env.example
+application-prod.yml
+application-production.yml
+!backend/src/main/resources/application.yml
+*.pem
+*.key
+*.p12
+*.jks
+
+# Java / Maven
+backend/target/
+*.class
+
+# Node / Next.js / Expo
+web/node_modules/
+web/.next/
+web/out/
+web/dist/
+web/build/
+web/coverage/
+
+mobile/node_modules/
+mobile/.expo/
+mobile/dist/
+mobile/build/
+mobile/coverage/
+
+# Logs
+*.log
+logs/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Uploads / generated files
+uploads/
+storage/
+tmp/
+
+# Private business exports for local import testing
+private-tally-exports/
+*.private.xml
+*.private.xlsx
+*.private.csv
+*.private.json

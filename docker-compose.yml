@@ -1,0 +1,91 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: stockpilot
+      POSTGRES_USER: stockpilot
+      POSTGRES_PASSWORD: stockpilot
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U stockpilot -d stockpilot"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  rabbitmq:
+    image: rabbitmq:3.13-management-alpine
+    environment:
+      RABBITMQ_DEFAULT_USER: stockpilot
+      RABBITMQ_DEFAULT_PASS: stockpilot
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  minio:
+    image: minio/minio:RELEASE.2024-10-13T13-34-11Z
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: stockpilot
+      MINIO_ROOT_PASSWORD: stockpilot123
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio-data:/data
+
+  adminer:
+    image: adminer:4
+    ports:
+      - "8081:8080"
+    depends_on:
+      - postgres
+
+  backend:
+    build:
+      context: ./backend
+    environment:
+      DATABASE_URL: jdbc:postgresql://postgres:5432/stockpilot
+      DATABASE_USERNAME: stockpilot
+      DATABASE_PASSWORD: stockpilot
+      REDIS_HOST: redis
+      CACHE_TYPE: redis
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_USERNAME: stockpilot
+      RABBITMQ_PASSWORD: stockpilot
+      STORAGE_MODE: local
+      LOCAL_STORAGE_ROOT: /app/uploads
+      JWT_SECRET: change-me-to-a-very-long-random-secret-before-production
+      CORS_ALLOWED_ORIGINS: http://localhost:3000,http://127.0.0.1:3000
+      APP_DEMO_SEED_ENABLED: "false"
+      SWAGGER_PUBLIC_ENABLED: "true"
+    ports:
+      - "8080:8080"
+    volumes:
+      - backend-uploads:/app/uploads
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started
+      minio:
+        condition: service_started
+
+volumes:
+  postgres-data:
+  minio-data:
+  backend-uploads:

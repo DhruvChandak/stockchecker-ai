@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ENVELOPE>
+  <BODY>
+    <DATA>
+      <TALLYMESSAGE>
+        <STOCKITEM NAME="MAGGI MASALA 70GM">
+          <PARENT>Instant Noodles</PARENT>
+          <BASEUNITS>PCS</BASEUNITS>
+          <OPENINGBALANCE>120 PCS</OPENINGBALANCE>
+          <OPENINGRATE>8.50/PCS</OPENINGRATE>
+          <HSNCODE>1902</HSNCODE>
+        </STOCKITEM>
+      </TALLYMESSAGE>
+      <TALLYMESSAGE>
+        <STOCKITEM NAME="DETTOL SOAP 75GM">
+          <PARENT>Personal Care</PARENT>
+          <BASEUNITS>PCS</BASEUNITS>
+          <OPENINGBALANCE>55 PCS</OPENINGBALANCE>
+          <OPENINGRATE>27.00/PCS</OPENINGRATE>
+          <HSNCODE>3401</HSNCODE>
+        </STOCKITEM>
+      </TALLYMESSAGE>
+      <TALLYMESSAGE>
+        <LEDGER NAME="Balaji Kirana">
+          <PARENT>Sundry Debtors</PARENT>
+          <PARTYGSTIN>27ABCDE1234F1Z5</PARTYGSTIN>
+        </LEDGER>
+      </TALLYMESSAGE>
+    </DATA>
+  </BODY>
+</ENVELOPE>

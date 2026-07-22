@@ -1,0 +1,11 @@
+app:
+  demo:
+    seed-enabled: ${APP_DEMO_SEED_ENABLED:false}
+  swagger:
+    public-enabled: ${SWAGGER_PUBLIC_ENABLED:true}
+  dev-tools:
+    enabled: ${APP_DEV_TOOLS_ENABLED:false}
+
+spring:
+  cache:
+    type: ${CACHE_TYPE:simple}
