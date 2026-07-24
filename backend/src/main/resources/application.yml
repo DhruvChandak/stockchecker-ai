@@ -53,6 +53,12 @@ management:
     health:
       probes:
         enabled: true
+  health:
+    # Redis and RabbitMQ are optional when running the API directly in local development.
+    redis:
+      enabled: ${MANAGEMENT_HEALTH_REDIS_ENABLED:false}
+    rabbit:
+      enabled: ${MANAGEMENT_HEALTH_RABBIT_ENABLED:false}
 
 app:
   import:
@@ -61,7 +67,9 @@ app:
     secret: ${JWT_SECRET:local-dev-only-change-this-secret-local-dev-only-change-this-secret}
     access-token-minutes: ${JWT_ACCESS_TOKEN_MINUTES:120}
   auth:
-    require-email-verification: ${APP_AUTH_REQUIRE_EMAIL_VERIFICATION:true}
+    # Local/default development allows immediate login after registration.
+    # application-prod.yml always overrides this to true.
+    require-email-verification: ${APP_AUTH_REQUIRE_EMAIL_VERIFICATION:false}
     verification-token-hours: ${APP_AUTH_VERIFICATION_TOKEN_HOURS:24}
     password-reset-token-minutes: ${APP_AUTH_PASSWORD_RESET_TOKEN_MINUTES:30}
     email-cooldown-seconds: ${APP_AUTH_EMAIL_COOLDOWN_SECONDS:60}

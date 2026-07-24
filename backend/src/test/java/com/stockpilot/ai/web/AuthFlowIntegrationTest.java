@@ -2,6 +2,7 @@ package com.stockpilot.ai.web;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.stockpilot.ai.repo.Repositories;
 import com.stockpilot.ai.service.DemoDataSeeder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ class AuthFlowIntegrationTest {
     @Autowired MockMvc mvc;
     @Autowired ObjectMapper mapper;
     @Autowired ApplicationContext applicationContext;
+    @Autowired Repositories.UserRepository users;
 
     @Test
     void registerLoginAndMeWork() throws Exception {
@@ -48,6 +50,33 @@ class AuthFlowIntegrationTest {
 
         mvc.perform(get("/api/auth/me").header("Authorization", "Bearer " + token))
             .andExpect(status().isOk());
+    }
+
+    @Test
+    void loginActivatesExistingUnverifiedAccountWhenVerificationIsDisabled() throws Exception {
+        var email = "local-unverified-" + System.nanoTime() + "@example.com";
+        mvc.perform(post("/api/auth/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                    {"businessName":"Local Shop","businessMode":"RETAIL","email":"%s","password":"password123","fullName":"Owner"}
+                    """.formatted(email)))
+            .andExpect(status().isOk());
+
+        var user = users.findByEmailIgnoreCase(email).orElseThrow();
+        user.emailVerified = false;
+        user.emailVerifiedAt = null;
+        users.save(user);
+
+        mvc.perform(post("/api/auth/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                    {"email":"%s","password":"password123"}
+                    """.formatted(email)))
+            .andExpect(status().isOk());
+
+        var activated = users.findByEmailIgnoreCase(email).orElseThrow();
+        assertThat(activated.emailVerified).isTrue();
+        assertThat(activated.emailVerifiedAt).isNotNull();
     }
 
     @Test

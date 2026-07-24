@@ -98,6 +98,16 @@ For a click-by-click demo path across web and mobile, see `LOCAL_TESTING_GUIDE.m
 ## Run Backend
 Use Java 21. Prefer the Maven wrapper so the project does not depend on a global Maven install:
 
+If you run PostgreSQL directly on your machine (rather than with `docker compose`), initialize the local development role and database once before starting the backend:
+
+```bash
+./scripts/bootstrap-local-postgres.sh
+```
+
+When already inside `backend/`, use `./scripts/bootstrap-local-postgres.sh` instead.
+
+The command connects as your current PostgreSQL administrator. If your server uses the standard `postgres` administrator role instead, run `PG_BOOTSTRAP_USER=postgres ./scripts/bootstrap-local-postgres.sh`. It is safe to run again and creates/updates the local-only `stockpilot` login expected by the default backend configuration.
+
 ```powershell
 cd backend
 .\mvnw.cmd spring-boot:run
@@ -121,7 +131,7 @@ For real backend testing and real Tally imports, keep demo seed disabled:
 $env:APP_DEMO_SEED_ENABLED="false"
 ```
 
-Email verification is enabled by default for real registrations. In local development, keep `EMAIL_PROVIDER=local`; the backend logs verification and password-reset links. In production, configure an email provider such as Resend:
+Email verification is disabled by default for local development, so a new account can return to the login page and sign in immediately. The `prod` profile enables verification by default. To pause it temporarily in production, explicitly set `APP_AUTH_REQUIRE_EMAIL_VERIFICATION=false`; remove that override or set it to `true` when email delivery is ready. To test verification locally, set it to `true` and keep `EMAIL_PROVIDER=local`; the backend logs verification and password-reset links. In production, configure an email provider such as Resend:
 
 ```powershell
 $env:APP_AUTH_REQUIRE_EMAIL_VERIFICATION="true"

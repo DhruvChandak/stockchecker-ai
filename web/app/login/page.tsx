@@ -3,8 +3,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { BarChart3 } from "lucide-react";
 import Link from "next/link";
-import { FormEvent, useState } from "react";
-import { api, ApiClientError, clearSession, setSession, setSessionPermissions } from "@/lib/api";
+import { FormEvent, useEffect, useState } from "react";
+import { api, ApiClientError, clearSession, DEMO_MODE, setSession, setSessionPermissions } from "@/lib/api";
 import { Field, PrimaryButton, TextInput } from "@/components/FormControls";
 import { GoogleSignInButton } from "@/components/GoogleSignInButton";
 
@@ -26,9 +26,21 @@ const demoAccounts = [
 
 export default function LoginPage() {
   const queryClient = useQueryClient();
-  const [email, setEmail] = useState("owner@demo.com");
-  const [password, setPassword] = useState("password123");
+  const [email, setEmail] = useState(DEMO_MODE ? "owner@demo.com" : "");
+  const [password, setPassword] = useState(DEMO_MODE ? "password123" : "");
   const [resendMessage, setResendMessage] = useState("");
+  const [registrationMessage, setRegistrationMessage] = useState("");
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("registered") !== "true") return;
+    const registeredEmail = params.get("email")?.trim() ?? "";
+    if (registeredEmail) {
+      setEmail(registeredEmail);
+    }
+    setRegistrationMessage("Account created successfully. Sign in with your new credentials.");
+  }, []);
+
   const login = useMutation({
     mutationFn: () => api<AuthResponse>("/api/auth/login", { method: "POST", body: JSON.stringify({ email, password }) }),
     onSuccess: async (data) => {
@@ -80,7 +92,7 @@ export default function LoginPage() {
             </div>
             <div>
               <h2 className="text-xl font-semibold">Welcome back</h2>
-              <p className="text-sm text-ink/55">Use the demo credentials or your own account.</p>
+              <p className="text-sm text-ink/55">{DEMO_MODE ? "Use a demo account or your own account." : "Sign in with your registered account."}</p>
             </div>
           </div>
           <div className="space-y-4">
@@ -96,6 +108,7 @@ export default function LoginPage() {
             <Field label="Password">
               <TextInput value={password} onChange={(event) => setPassword(event.target.value)} type="password" required />
             </Field>
+            {registrationMessage ? <p className="rounded border border-moss/25 bg-mint px-3 py-2 text-sm text-moss">{registrationMessage}</p> : null}
             {login.error ? <p className="text-sm text-coral">{login.error.message}</p> : null}
             {loginError?.code === "EMAIL_NOT_VERIFIED" ? (
               <div className="rounded border border-coral/30 bg-coral/5 p-3 text-sm">
@@ -117,25 +130,27 @@ export default function LoginPage() {
           <p className="mt-3 text-sm">
             <Link className="font-medium text-moss" href="/forgot-password">Forgot password?</Link>
           </p>
-          <div className="mt-5 border-t border-ink/10 pt-4">
-            <p className="mb-2 text-xs font-semibold uppercase tracking-normal text-ink/45">Demo role accounts</p>
-            <div className="grid grid-cols-2 gap-2">
-              {demoAccounts.map(([label, accountEmail]) => (
-                <button
-                  key={accountEmail}
-                  type="button"
-                  className="rounded border border-ink/10 px-2 py-2 text-left text-xs font-medium text-ink/70 hover:border-moss/40 hover:bg-mint"
-                  onClick={() => {
-                    setEmail(accountEmail);
-                    setPassword("password123");
-                  }}
-                >
-                  <span className="block text-ink">{label}</span>
-                  <span className="block truncate text-ink/45">{accountEmail}</span>
-                </button>
-              ))}
+          {DEMO_MODE ? (
+            <div className="mt-5 border-t border-ink/10 pt-4">
+              <p className="mb-2 text-xs font-semibold uppercase tracking-normal text-ink/45">Demo role accounts</p>
+              <div className="grid grid-cols-2 gap-2">
+                {demoAccounts.map(([label, accountEmail]) => (
+                  <button
+                    key={accountEmail}
+                    type="button"
+                    className="rounded border border-ink/10 px-2 py-2 text-left text-xs font-medium text-ink/70 hover:border-moss/40 hover:bg-mint"
+                    onClick={() => {
+                      setEmail(accountEmail);
+                      setPassword("password123");
+                    }}
+                  >
+                    <span className="block text-ink">{label}</span>
+                    <span className="block truncate text-ink/45">{accountEmail}</span>
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          ) : null}
           <p className="mt-5 text-sm text-ink/60">
             New business? <Link className="font-semibold text-moss" href="/register">Create account</Link>
           </p>

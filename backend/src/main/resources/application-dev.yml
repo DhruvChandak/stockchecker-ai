@@ -1,4 +1,6 @@
 app:
+  auth:
+    require-email-verification: ${APP_AUTH_REQUIRE_EMAIL_VERIFICATION:false}
   demo:
     seed-enabled: ${APP_DEMO_SEED_ENABLED:false}
   swagger:

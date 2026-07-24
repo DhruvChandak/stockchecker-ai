@@ -21,7 +21,7 @@ app:
   jwt:
     secret: ${JWT_SECRET}
   auth:
-    require-email-verification: true
+    require-email-verification: ${APP_AUTH_REQUIRE_EMAIL_VERIFICATION:true}
   public-url: ${APP_PUBLIC_URL}
   backend-public-url: ${BACKEND_PUBLIC_URL}
   email:

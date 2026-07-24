@@ -7,10 +7,29 @@ const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), "utf
 test("backend mode keeps demo API behind the env flag", () => {
   const api = read("lib/api.ts");
   const demoApi = read("lib/demoApi.ts");
+  const login = read("app/login/page.tsx");
+  const home = read("app/page.tsx");
 
   assert.match(api, /if \(DEMO_MODE\)/);
   assert.match(api, /return demoApi<T>\(path, init\)/);
   assert.match(demoApi, /Demo API cannot be used while Backend mode is active\./);
+  assert.match(login, /DEMO_MODE \? "owner@demo\.com" : ""/);
+  assert.match(login, /\{DEMO_MODE \? \(/);
+  assert.match(login, /Account created successfully\. Sign in with your new credentials\./);
+  assert.match(login, /params\.get\("email"\)/);
+  assert.match(home, /redirect\("\/login"\)/);
+  assert.doesNotMatch(home, /redirect\("\/"\)/);
+});
+
+test("local registration returns users to login while production keeps verification enabled", () => {
+  const register = read("app/register/page.tsx");
+  const localConfig = read("../backend/src/main/resources/application.yml");
+  const productionConfig = read("../backend/src/main/resources/application-prod.yml");
+
+  assert.match(register, /\/login\?registered=true&email=/);
+  assert.doesNotMatch(register, /setSession\(data\.accessToken/);
+  assert.match(localConfig, /APP_AUTH_REQUIRE_EMAIL_VERIFICATION:false/);
+  assert.match(productionConfig, /APP_AUTH_REQUIRE_EMAIL_VERIFICATION:true/);
 });
 
 test("backend pages include clean empty states instead of demo fallback values", () => {

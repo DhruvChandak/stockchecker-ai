@@ -3,13 +3,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { FormEvent, useState } from "react";
-import { api, clearSession, setSession, setSessionPermissions } from "@/lib/api";
+import { api, clearSession } from "@/lib/api";
 import { BusinessMode, BusinessModeSelector } from "@/components/BusinessModeSelector";
 import { Field, PrimaryButton, TextInput } from "@/components/FormControls";
 import { GoogleSignInButton } from "@/components/GoogleSignInButton";
 
 type AuthResponse = { accessToken?: string; role?: string; emailVerificationRequired?: boolean };
-type PermissionResponse = { permissions: string[] };
 
 export default function RegisterPage() {
   const queryClient = useQueryClient();
@@ -29,14 +28,7 @@ export default function RegisterPage() {
         window.location.assign(`/check-email?email=${encodeURIComponent(form.email)}`);
         return;
       }
-      setSession(data.accessToken, data.role);
-      try {
-        const access = await api<PermissionResponse>("/api/auth/me/permissions");
-        setSessionPermissions(access.permissions ?? []);
-      } catch {
-        setSessionPermissions([]);
-      }
-      window.location.assign("/dashboard");
+      window.location.assign(`/login?registered=true&email=${encodeURIComponent(form.email.trim())}`);
     }
   });
 

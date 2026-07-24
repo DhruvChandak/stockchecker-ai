@@ -58,6 +58,14 @@ user: stockpilot
 password: stockpilot
 ```
 
+On macOS/Linux, the repository can create these local development credentials for you (the connection user must have permission to create roles and databases):
+
+```bash
+./scripts/bootstrap-local-postgres.sh
+```
+
+If the PostgreSQL administrator is named `postgres`, use `PG_BOOTSTRAP_USER=postgres ./scripts/bootstrap-local-postgres.sh`. This resolves `FATAL: role "stockpilot" does not exist` without changing the application's database settings.
+
 Redis, RabbitMQ, and MinIO are optional for this local import test because the backend defaults to simple cache and local file storage when those modes are configured.
 
 ## Start Backend Clean

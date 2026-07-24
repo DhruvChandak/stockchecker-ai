@@ -51,7 +51,7 @@ public class AuthService {
         AuthTokenService tokenService,
         EmailService emailService,
         GoogleIdentityService googleIdentityService,
-        @Value("${app.auth.require-email-verification:true}") boolean requireEmailVerification,
+        @Value("${app.auth.require-email-verification:false}") boolean requireEmailVerification,
         @Value("${app.auth.verification-token-hours:24}") long verificationTokenHours,
         @Value("${app.auth.password-reset-token-minutes:30}") long passwordResetTokenMinutes,
         @Value("${app.auth.email-cooldown-seconds:60}") long emailCooldownSeconds,
@@ -108,13 +108,22 @@ public class AuthService {
         return new ApiDtos.AuthResponse(token, tenant.id, user.id, membership.role, user.email, user.fullName);
     }
 
+    @Transactional
     public ApiDtos.AuthResponse login(ApiDtos.LoginRequest request) {
         var normalizedEmail = normalizeEmail(request.email());
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(normalizedEmail, request.password()));
         var user = users.findByEmailIgnoreCase(normalizedEmail).orElseThrow();
         if (!user.emailVerified) {
-            auditService.log(null, user.id, "LOGIN_BLOCKED_EMAIL_NOT_VERIFIED", "UserAccount", user.id, Map.of());
-            throw new ApiException(HttpStatus.UNAUTHORIZED, "EMAIL_NOT_VERIFIED", "Please verify your email before logging in.");
+            if (requireEmailVerification) {
+                auditService.log(null, user.id, "LOGIN_BLOCKED_EMAIL_NOT_VERIFIED", "UserAccount", user.id, Map.of());
+                throw new ApiException(HttpStatus.UNAUTHORIZED, "EMAIL_NOT_VERIFIED", "Please verify your email before logging in.");
+            }
+            user.emailVerified = true;
+            user.emailVerifiedAt = Instant.now();
+            user.verificationTokenHash = null;
+            user.verificationTokenExpiresAt = null;
+            users.save(user);
+            auditService.log(null, user.id, "EMAIL_VERIFICATION_BYPASSED", "UserAccount", user.id, Map.of("reason", "verification_disabled"));
         }
         var membership = activeMembership(user.id);
         if (membership.isEmpty()) {

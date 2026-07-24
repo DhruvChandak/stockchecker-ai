@@ -65,6 +65,8 @@ services:
       RABBITMQ_HOST: rabbitmq
       RABBITMQ_USERNAME: stockpilot
       RABBITMQ_PASSWORD: stockpilot
+      MANAGEMENT_HEALTH_REDIS_ENABLED: "true"
+      MANAGEMENT_HEALTH_RABBIT_ENABLED: "true"
       STORAGE_MODE: local
       LOCAL_STORAGE_ROOT: /app/uploads
       JWT_SECRET: change-me-to-a-very-long-random-secret-before-production
